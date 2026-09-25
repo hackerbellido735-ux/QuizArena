@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="#080b10">
+    <meta name="description" content="QuizArena: juego de preguntas de cultura, matemática, ciencia e historia.">
+    <title>QuizArena</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= PANTALLA PRINCIPAL ================= -->
+    <section id="inicio" class="pantalla activa">
+
+        <header class="topbar">
+            <div>
+                <h1>Quiz<span>Arena</span></h1>
+                <p>Conocimiento. Diversión. Siempre más.</p>
+            </div>
+            <button class="icon-button" aria-label="Ir al perfil" onclick="mostrarPantalla('perfil')">⚙</button>
+        </header>
+
+        <!-- RESUMEN JUGADOR -->
+        <div class="resumen-jugador">
+            <div class="resumen-box">
+                <div class="resumen-icon naranja">🔥</div>
+                <div>
+                    <strong id="rachaInicio">0 días</strong>
+                    <small>Racha actual</small>
+                </div>
+            </div>
+            <div class="separador"></div>
+            <div class="resumen-box">
+                <div class="resumen-icon amarillo">⭐</div>
+                <div>
+                    <strong id="puntosInicio">0 pts</strong>
+                    <small>Puntaje total</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORÍAS -->
+        <div class="titulo-seccion">
+            <h2>Categorías</h2>
+            <button onclick="mostrarTodasCategorias()">Ver todas ›</button>
+        </div>
+
+        <div class="categorias-grid" id="categoriasGrid"></div>
+
+        <!-- RETO DEL DÍA -->
+        <div class="reto-dia">
+            <div>
+                <small>RETO DEL DÍA</small>
+                <h3>Suma mental express</h3>
+                <p>Pon a prueba tu rapidez mental.</p>
+            </div>
+            <div class="reto-icon">⚡</div>
+            <button onclick="iniciarReto('sprint')">Jugar ahora <span>›</span></button>
+        </div>
+
+    </section>
+
+    <!-- ================= PANTALLA QUIZ ================= -->
+    <section id="quiz" class="pantalla">
+
+        <div class="quiz-header">
+            <button class="icon-button" aria-label="Salir del quiz" onclick="salirQuiz()">×</button>
+            <div class="categoria-mini" id="categoriaActual">🌎 Cultura General</div>
+            <div class="vidas oculto" id="vidas" aria-label="Vidas restantes"></div>
+        </div>
+
+        <div class="timer-container">
+            <div id="timerCircle" class="timer-circle">
+                <strong id="timer">15</strong>
+                <span>segundos</span>
+            </div>
+        </div>
+
+        <div class="pregunta-numero">
+            Pregunta <span id="numeroPregunta">1</span> de <span id="totalPreguntas">10</span>
+        </div>
+
+        <h2 id="textoPregunta" class="texto-pregunta">Pregunta</h2>
+
+        <div id="opciones" class="opciones"></div>
+
+        <div id="explicacion" class="explicacion oculto">
+            <div class="explicacion-icon">💡</div>
+            <div>
+                <strong>Explicación</strong>
+                <p id="textoExplicacion"></p>
+            </div>
+        </div>
+
+        <button id="siguienteBtn" class="boton-principal oculto" onclick="siguientePregunta()">
+            Siguiente pregunta <span>›</span>
+        </button>
+
+        <div class="quiz-footer">
+            <div>
+                <span>Progreso</span>
+                <div class="mini-progress"><div id="progresoPregunta"></div></div>
+            </div>
+            <strong>⭐ <span id="puntosPregunta">0</span> pts</strong>
+        </div>
+
+    </section>
+
+    <!-- ================= PANTALLA RESULTADO ================= -->
+    <section id="resultado" class="pantalla">
+        <div class="resultado-icon" id="resultadoIcon">✓</div>
+        <h1 id="resultadoTitulo">¡Correcto!</h1>
+        <p id="resultadoSubtitulo">Sigue así.</p>
+
+        <div class="resultado-respuesta">
+            <div id="respuestaUsuario">A</div>
+            <strong id="textoRespuestaUsuario">Respuesta</strong>
+        </div>
+
+        <div class="resultado-correcta">
+            <div>✓</div>
+            <strong id="textoRespuestaCorrecta">Correcta</strong>
+        </div>
+
+        <div class="resultado-explica oculto" id="resultadoExplica">
+            <strong>💡 Explicación</strong>
+            <p id="resultadoExplicaTexto"></p>
+        </div>
+
+        <div class="resultado-puntos">
+            <span>Puntos obtenidos</span>
+            <strong id="puntosGanados">+120</strong>
+        </div>
+
+        <button class="boton-principal" onclick="siguientePregunta()">
+            Siguiente pregunta <span>›</span>
+        </button>
+    </section>
+
+    <!-- ================= PANTALLA RETOS ================= -->
+    <section id="retos" class="pantalla">
+        <header class="topbar">
+            <div>
+                <h1>Quiz<span>Arena</span></h1>
+                <p>Acepta el desafío. Supera tus límites.</p>
+            </div>
+        </header>
+
+        <div class="titulo-seccion">
+            <h2>Modos de reto</h2>
+            <small>Ponte a prueba</small>
+        </div>
+
+        <button class="reto-card naranja-card" onclick="iniciarReto('sprint')">
+            <div class="reto-card-icon">➗</div>
+            <div>
+                <h3>Sprint Matemático</h3>
+                <p>Resuelve operaciones rápidas antes de que se acabe el tiempo.</p>
+                <span>Dificultad ●●●○○</span>
+            </div>
+            <b>›</b>
+        </button>
+
+        <button class="reto-card cyan-card" onclick="iniciarReto('supervivencia')">
+            <div class="reto-card-icon">❤️</div>
+            <div>
+                <h3>Supervivencia</h3>
+                <p>Responde correctamente. Tienes 3 vidas.</p>
+                <span>Dificultad ●●●●○</span>
+            </div>
+            <b>›</b>
+        </button>
+
+        <button class="reto-card purple-card" onclick="iniciarReto('mixto')">
+            <div class="reto-card-icon">⏱</div>
+            <div>
+                <h3>Contrarreloj Mixto</h3>
+                <p>Preguntas de diferentes categorías. ¿Qué tan rápido puedes responder?</p>
+                <span>Dificultad ●●●●●</span>
+            </div>
+            <b>›</b>
+        </button>
+
+        <button class="boton-reto-aleatorio" onclick="iniciarRetoAleatorio()">▶ Jugar reto aleatorio</button>
+    </section>
+
+    <!-- ================= PERFIL ================= -->
+    <section id="perfil" class="pantalla">
+        <div class="perfil-header">
+            <button class="icon-button" aria-label="Volver" onclick="mostrarPantalla('inicio')">‹</button>
+            <h1>Mi perfil</h1>
+        </div>
+
+        <div class="perfil-foto-contenedor">
+            <img id="fotoPerfil" class="foto-perfil" src="" alt="Foto de perfil">
+            <label for="selectorFoto" class="boton-cambiar-foto" aria-label="Cambiar foto">📷</label>
+            <input id="selectorFoto" type="file" accept="image/*" hidden>
+        </div>
+
+        <div class="perfil-datos">
+            <label for="nombreUsuario">Nombre de usuario</label>
+            <input id="nombreUsuario" type="text" maxlength="25" placeholder="Escribe tu nombre">
+        </div>
+
+        <div class="perfil-datos">
+            <label for="descripcionUsuario">Sobre mí</label>
+            <textarea id="descripcionUsuario" maxlength="120" placeholder="Cuéntanos algo sobre ti..."></textarea>
+            <div class="contador-caracteres"><span id="contadorDescripcion">0</span>/120</div>
+        </div>
+
+        <button class="boton-guardar-perfil" onclick="guardarPerfil()">Guardar perfil</button>
+
+        <!-- AJUSTES -->
+        <div class="ajustes-perfil">
+            <div class="ajuste-item">
+                <span>🔊 Sonidos del juego</span>
+                <button id="toggleSonido" class="switch" role="switch" aria-checked="true" onclick="alternarSonido()"><i></i></button>
+            </div>
+        </div>
+
+        <!-- ESTADÍSTICAS -->
+        <div class="estadisticas-perfil">
+            <div class="estadistica"><span>🧠</span><strong id="iqPerfil">100</strong><small>Índice de juego</small></div>
+            <div class="estadistica"><span>🔥</span><strong id="rachaPerfil">0</strong><small>Racha</small></div>
+            <div class="estadistica"><span>⭐</span><strong id="puntosPerfil">0</strong><small>Puntos</small></div>
+            <div class="estadistica"><span>🎯</span><strong id="aciertosPerfil">0%</strong><small>Aciertos</small></div>
+        </div>
+
+        <!-- NIVEL -->
+        <div class="nivel-perfil">
+            <div class="nivel-arriba">
+                <strong>Nivel <span id="nivelPerfil">1</span></strong>
+                <span id="xpPerfil">0 / 500 XP</span>
+            </div>
+            <div class="barra-nivel"><div id="progresoNivel" class="barra-nivel-progreso"></div></div>
+            <p>Responde preguntas para subir de nivel.</p>
+        </div>
+
+        <!-- PROGRESO -->
+        <div class="progreso-perfil">
+            <h2>Tu progreso</h2>
+            <div class="progreso-item"><span>Preguntas respondidas</span><strong id="preguntasRespondidas">0</strong></div>
+            <div class="progreso-item"><span>Respuestas correctas</span><strong id="respuestasCorrectasPerfil">0</strong></div>
+            <div class="progreso-item"><span>Mejor racha</span><strong id="mejorRachaPerfil">0</strong></div>
+            <div class="progreso-item"><span>Mejor puntaje (una partida)</span><strong id="mejorPuntajePerfil">0</strong></div>
+        </div>
+
+        <button class="boton-reiniciar" onclick="reiniciarProgreso()">♻ Reiniciar progreso</button>
+
+        <p class="nota-iq">🧠 El índice de juego es una medida interna basada en el rendimiento dentro de QuizArena. No representa una medición profesional de IQ.</p>
+    </section>
+
+    <!-- ================= MENÚ INFERIOR ================= -->
+    <nav class="menu">
+        <button class="menu-item activo" onclick="mostrarPantalla('inicio')">
+            <span>🏠</span><small>Categorías</small>
+        </button>
+        <button class="menu-item" onclick="mostrarPantalla('retos')">
+            <span>🏆</span><small>Retos</small>
+        </button>
+        <button class="menu-item" onclick="mostrarPantalla('perfil')">
+            <span>👤</span><small>Perfil</small>
+        </button>
+    </nav>
+
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
